@@ -304,6 +304,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2ac00f93ad728e478d739cc72d1364f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ballPrefab: {fileID: 8698178989027222292, guid: 136f6308517c89c49b7b729fcd70afa7, type: 3}
+  ball: {fileID: 0}
+  ballSpeed: 1
 --- !u!1 &2144719947
 GameObject:
   m_ObjectHideFlags: 0
