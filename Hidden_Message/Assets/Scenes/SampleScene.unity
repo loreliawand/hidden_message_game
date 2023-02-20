@@ -306,7 +306,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ballPrefab: {fileID: 8698178989027222292, guid: 136f6308517c89c49b7b729fcd70afa7, type: 3}
   ball: {fileID: 0}
-  ballSpeed: 1
 --- !u!1 &2144719947
 GameObject:
   m_ObjectHideFlags: 0

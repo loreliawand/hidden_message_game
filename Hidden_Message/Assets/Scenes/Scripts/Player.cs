@@ -6,105 +6,57 @@ public class Player : MonoBehaviour
 {
     public GameObject ballPrefab;
     public GameObject ball;
+    private Ball _ball_script;
 
-    private Vector3 mousePosition;
+    private Vector3 _mousePosition;
 
-    private float yAxis;
-    private float minX = -9f;
-    private float maxX = 9f;
-    private float ballSpeed = 1.0f;
-    private float x;
-    private float y;
-    private Vector2 leftPoint;
-    private Vector2 rightPoint;
-    private float topPoint;
+    private float _yAxis;
+    private float _minX = -9f;
+    private float _maxX = 9f;
+    internal Vector2 leftPoint;
+    internal Vector2 rightPoint;
+    internal float topPoint;
 
-    private bool pressedKey = false;
-    private bool movingUp = false;
-    private bool movingRight = false;
+    private bool _pressedKey = false;
 
     void Start()
     {
         //Y position for player's board
-        yAxis = transform.position.y;
+        _yAxis = transform.position.y;
         ball = Instantiate(ballPrefab, new Vector2(0, -3.7f), Quaternion.identity);
-        x = Random.Range(0.0f, 1.0f);
-        y = Random.Range(0.0f, 1.0f);
+        _ball_script = GameObject.Find("Ball_prefab(Clone)").GetComponent<Ball>();
 
     }
 
     // Update is called once per frame
     void Update()
     {
-        mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        leftPoint.x = mousePosition.x - 0.15f;
-        leftPoint.y = yAxis;
-        rightPoint.x = mousePosition.x + 0.15f;
-        rightPoint.y = yAxis;
+        _mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        leftPoint.x = _mousePosition.x - 0.15f;
+        leftPoint.y = _yAxis;
+        rightPoint.x = _mousePosition.x + 0.15f;
+        rightPoint.y = _yAxis;
         topPoint = transform.position.y + 0.3f;
 
-        transform.position = new Vector2(Mathf.Clamp(mousePosition.x, minX, maxX), yAxis);
+        transform.position = new Vector2(Mathf.Clamp(_mousePosition.x, _minX, _maxX), _yAxis);
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            pressedKey = true;
-            movingUp = true;
-            movingRight = true;
+            _pressedKey = true;
+            _ball_script.movingUp = true;
+            _ball_script.movingRight = true;
         }
 
-        if (ball.transform.position.y >= 4.9f)
-        {
-            movingUp = false;
-        }
-        else if ((ball.transform.position.x >= leftPoint.x && ball.transform.position.x <= rightPoint.x) && (ball.transform.position.y <= topPoint))
-        {
-            movingUp = true;
-        }
-        else if (ball.transform.position.y <= -4.9f)
+        if (ball.transform.position.y <= -4.9f)
         {
             Destroy(ball);
             ball = Instantiate(ballPrefab, new Vector2(0, -3.7f), Quaternion.identity);
-            pressedKey = false;
+            _pressedKey = false;
         }
 
-        if (ball.transform.position.x >= 8.75f)
+        if (_pressedKey == true)
         {
-            movingRight = false;
+            _ball_script.Ball_movement();
         }
-        else if (ball.transform.position.x <= -8.75)
-        {
-            movingRight = true;
-        }
-
-        if (pressedKey == true)
-        {
-            if (movingUp == true)
-            {
-                if (movingRight == true)
-                {
-                    Moving(x, y);
-                }
-                else
-                {
-                    Moving(-x, y);
-                }
-            }
-            else if (movingUp == false)
-            {
-                if (movingRight == true)
-                {
-                    Moving(x, -y);
-                }
-                else
-                {
-                    Moving(-x, -y);
-                }
-            }
-        }
-    }
-
-    private void Moving(float x, float y)
-    {
-        ball.transform.Translate(new Vector2(x, y) * ballSpeed * Time.deltaTime);
     }
 }
